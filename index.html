@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lista de Usuarios</title>
+  <style>
+    /* Resetear márgenes y paddings */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    /* Estilo general */
+    body {
+      font-family: 'Arial', sans-serif;
+      background-color: #f9f1f7; /* Fondo rosa suave tipo Fiondi */
+      color: #333;
+      padding: 20px;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      flex-direction: column;
+      min-height: 100vh;
+      margin: 0;
+      text-align: center;
+    }
+
+    /* Título */
+    h1 {
+      font-size: 2.5rem;
+      color: #2c3e50;
+      font-weight: 700;
+      margin-bottom: 30px;
+      margin-top: 50px;
+    }
+
+    /* Contenedor de las tarjetas */
+    .users-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 30px;
+      width: 100%;
+      max-width: 1200px;
+      padding: 20px;
+    }
+
+    /* Estilo para cada tarjeta */
+    .user-card {
+      background-color: #fff;
+      border-radius: 12px;
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
+      width: 100%;
+      padding: 20px;
+      text-align: center;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      border: 1px solid #e0e0e0;
+      margin-bottom: 20px;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    /* Efecto hover para las tarjetas */
+    .user-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 8px 22px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Imagen del usuario */
+    .user-card img {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      object-fit: cover;
+      margin-bottom: 15px;
+      transition: transform 0.3s ease;
+    }
+
+    /* Efecto hover en la imagen */
+    .user-card:hover img {
+      transform: scale(1.1); /* Aumenta el tamaño de la imagen al pasar el ratón */
+    }
+
+    /* Título de cada tarjeta */
+    .user-card h2 {
+      font-size: 1.6rem;
+      color: #2c3e50;
+      margin-bottom: 10px;
+      font-weight: 600;
+    }
+
+    /* Detalles dentro de la tarjeta */
+    .user-card p {
+      font-size: 1rem;
+      color: #7f8c8d;
+      margin-bottom: 12px;
+      line-height: 1.5;
+    }
+
+    /* Estilo de los enlaces */
+    .user-card a {
+      font-size: 1rem;
+      color: #3498db;
+      text-decoration: none;
+      margin-top: 12px;
+      display: inline-block;
+      transition: color 0.3s ease;
+    }
+
+    /* Efecto hover en los enlaces */
+    .user-card a:hover {
+      color: #2980b9;
+    }
+
+    /* Diseño responsivo para pantallas pequeñas */
+    @media (max-width: 768px) {
+      .users-container {
+        padding: 0 10px;
+      }
+
+      .user-card {
+        width: 100%;
+        max-width: 320px;
+        padding: 20px;
+      }
+    }
+
+  </style>
+</head>
+<body>
+
+  <h1>Usuarios de JSONPlaceholder</h1>
+  
+  <div class="users-container" id="users-list">
+    <!-- Los usuarios se cargarán aquí -->
+  </div>
+
+  <script>
+    // URL para obtener los usuarios
+    const url = "https://jsonplaceholder.typicode.com/users";
+
+    // Hacer la solicitud a la API
+    fetch(url)
+      .then(response => response.json())
+      .then(data => {
+        const usersContainer = document.getElementById('users-list');
+        
+        data.forEach(user => {
+          const userCard = document.createElement('div');
+          userCard.classList.add('user-card');
+
+          // Crear el contenido de cada tarjeta
+          userCard.innerHTML = `
+            <img src="https://i.pravatar.cc/150?img=${user.id}" alt="Imagen de ${user.name}" />
+            <h2>${user.name}</h2>
+            <p><strong>Email:</strong> ${user.email}</p>
+            <p><strong>Phone:</strong> ${user.phone}</p>
+            <p><strong>Website:</strong> <a href="http://${user.website}" target="_blank">${user.website}</a></p>
+          `;
+
+          // Agregar la tarjeta de usuario al contenedor
+          usersContainer.appendChild(userCard);
+        });
+      })
+      .catch(error => console.error('Error:', error));
+  </script>
+
+</body>
+</html>
